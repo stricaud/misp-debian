@@ -9,4 +9,7 @@ services:
     container_name: testpkg
     depends_on:
       - pkgbuilder
-      
+    expose:
+      - "80"
+    ports:
+      - "80:80"

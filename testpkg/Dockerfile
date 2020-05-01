@@ -18,5 +18,5 @@ RUN mkdir /opt/git/
 WORKDIR /opt/git
 RUN git clone https://github.com/misp/misp
 WORKDIR /opt/git/misp
-
-CMD ["sh", "-c", "tail -f /dev/null"]
+ 
+CMD ["/bin/bash", "-c", "source /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"]
