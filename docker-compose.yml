@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  pkgbuilder:
+    build: ./pkgbuilder
+    container_name: pkgbuilder
+  testpkg:
+    build: ./testpkg
+    container_name: testpkg
+    depends_on:
+      - pkgbuilder
+      
