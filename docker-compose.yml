@@ -3,13 +3,49 @@ version: "3"
 services:
   pkgbuilder:
     build: ./pkgbuilder
-    container_name: pkgbuilder
+    container_name: deb-builder
+    networks:
+      - debianmispnet
+    volumes:
+      - ./data:/data
+      - ./data/git-misp:/opt/git/
+      
   testpkg:
     build: ./testpkg
-    container_name: testpkg
+    container_name: deb-test
     depends_on:
       - pkgbuilder
+    networks:
+      - debianmispnet
     expose:
       - "80"
     ports:
       - "80:80"
+    volumes:
+      - ./data:/data
+
+  mariadb:
+    container_name: deb-mariadb
+    image: mariadb/server:10.4
+    restart: on-failure
+    environment:
+      - MARIADB_ROOT_PASSWORD=rootpwd
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+    networks:
+      - debianmispnet
+    expose:
+      - "3306"
+
+  redis:
+    image: redis
+    container_name: deb-redis
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - debianmispnet
+    expose:
+      - "6379"
+
+networks:
+  debianmispnet:

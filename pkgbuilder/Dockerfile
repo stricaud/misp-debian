@@ -12,5 +12,8 @@ RUN mkdir /opt/git/
 WORKDIR /opt/git
 RUN git clone https://github.com/misp/misp
 WORKDIR /opt/git/misp
+RUN git submodule init
+RUN git submodule update
 
+RUN mkdir /data
 CMD ["sh", "-c", "tail -f /dev/null"]

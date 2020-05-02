@@ -13,10 +13,9 @@ RUN apt -qy install libapache2-mod-php7.3 php7.3 php7.3-cli php7.3-dev php7.3-js
 RUN apt -qy install supervisor debconf-utils
 RUN apt -qy install python3-zmq python3-pip python3-redis
 RUN apt -qy install rsyslog-gnutls
+RUN apt -qy install php-mysql
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir /opt/git/
-WORKDIR /opt/git
-RUN git clone https://github.com/misp/misp
-WORKDIR /opt/git/misp
- 
-CMD ["/bin/bash", "-c", "source /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"]
+RUN mkdir /data 
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
